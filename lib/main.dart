@@ -19,6 +19,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:classnet_app/model/hive/hive_config.dart';
 import 'package:provider/provider.dart';
 
+import 'package:flutter/foundation.dart';
+
+
 
 const darkModeBox = 'darkModeTutorial';
 bool darkMode = false;
@@ -69,6 +72,15 @@ class MyApp extends StatelessWidget {
           ],
             child: BlocBuilder<TranslateBloc, TranslateState>(builder: (context, lang) {
             return MaterialApp(
+              builder: (context, widget) {
+                Widget error = const Text('...rendering error...');
+                if (widget is Scaffold || widget is Navigator) {
+                  error = Scaffold(body: Center(child: error));
+                }
+                ErrorWidget.builder = (errorDetails) => error;
+                if (widget != null) return widget;
+                throw ('widget is null');
+              },
             locale:  lang.locale,
             debugShowCheckedModeBanner: false,
             title: _title,
